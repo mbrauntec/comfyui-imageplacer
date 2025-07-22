@@ -43,7 +43,7 @@ class AddPadding:
     RETURN_NAMES = ("image_4_channel", "image_3_channel",)
     FUNCTION = "add_padding"
 
-    CATEGORY = "Image"
+    CATEGORY = "Goede"
 
     def add_padding(self, image, left, top, right, bottom):
         # Convert tensor to PIL image
