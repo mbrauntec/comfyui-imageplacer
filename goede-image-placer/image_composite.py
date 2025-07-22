@@ -19,7 +19,7 @@ class ImageComposite:
             },
         }
 
-    RETURN_TYPES = ("IMAGE",)
+    RETURN_TYPES = ("IMAGE", "IMAGE")
     FUNCTION = "composite"
 
     CATEGORY = "Image"
@@ -53,7 +53,11 @@ class ImageComposite:
         # Convert the composite image back to a tensor
         composite_tensor = torch.from_numpy(np.array(composite_image).astype(np.float32) / 255.0).unsqueeze(0)
 
-        return (composite_tensor,)
+        # Create a 3-channel version of the composite image
+        composite_image_rgb = composite_image.convert("RGB")
+        composite_tensor_rgb = torch.from_numpy(np.array(composite_image_rgb).astype(np.float32) / 255.0).unsqueeze(0)
+
+        return (composite_tensor, composite_tensor_rgb)
 
 NODE_CLASS_MAPPINGS = {
     "ImageComposite": ImageComposite
