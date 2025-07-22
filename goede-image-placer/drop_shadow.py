@@ -46,7 +46,7 @@ class DropShadow:
     RETURN_TYPES = ("IMAGE",)
     FUNCTION = "add_shadow"
 
-    CATEGORY = "Image"
+    CATEGORY = "Goede"
 
     def add_shadow(self, image, shadow_angle, shadow_distance, shadow_blur, shadow_scale, shadow_color):
         # Convert tensor to PIL image

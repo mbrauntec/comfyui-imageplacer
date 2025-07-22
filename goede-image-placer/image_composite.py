@@ -22,7 +22,7 @@ class ImageComposite:
     RETURN_TYPES = ("IMAGE", "IMAGE")
     FUNCTION = "composite"
 
-    CATEGORY = "Image"
+    CATEGORY = "Goede"
 
     def composite(self, background_image, subject_image, spacing):
         # Convert tensors to PIL images
