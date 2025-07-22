@@ -70,7 +70,7 @@ class DropShadow:
             shadow = shadow.filter(ImageFilter.GaussianBlur(shadow_blur))
 
         # Calculate shadow offset
-        angle_rad = math.radians(shadow_angle)
+        angle_rad = math.radians(360 - shadow_angle)
         offset_x = int(shadow_distance * math.cos(angle_rad))
         offset_y = int(shadow_distance * math.sin(angle_rad))
 
