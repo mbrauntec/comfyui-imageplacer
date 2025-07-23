@@ -61,36 +61,61 @@ class DropShadow:
         shadow = Image.new('RGBA', image_pil.size, color=shadow_color)
         shadow.putalpha(alpha)
 
-        # Scale the shadow
+        # --- Schatten um Mittelpunkt skalieren ---
         if shadow_scale != 1.0:
-            shadow = shadow.resize((int(shadow.width * shadow_scale), int(shadow.height * shadow_scale)), Image.LANCZOS)
+            # Mittelpunkt berechnen
+            cx, cy = image_pil.width // 2, image_pil.height // 2
+            new_w = int(shadow.width * shadow_scale)
+            new_h = int(shadow.height * shadow_scale)
+            shadow = shadow.resize((new_w, new_h), Image.LANCZOS)
+            # Neuen Mittelpunkt berechnen
+            new_cx, new_cy = new_w // 2, new_h // 2
+            # Offset, um den Schatten-Mittelpunkt auf den Original-Mittelpunkt zu legen
+            scale_offset_x = cx - new_cx
+            scale_offset_y = cy - new_cy
+        else:
+            scale_offset_x = 0
+            scale_offset_y = 0
+
+        # --- Spiegelung je nach Winkel ---
+        # shadow_angle: 0° = Osten, 90° = Norden, 180° = Westen, 270° = Süden
+        # Vertikal spiegeln (links/rechts), wenn Winkel zwischen 90° und 270°
+        # Horizontal spiegeln (oben/unten), wenn Winkel zwischen 180° und 360°
+        if 90 < shadow_angle < 270:
+            shadow = ImageOps.mirror(shadow)
+        if 180 < shadow_angle < 360:
+            shadow = ImageOps.flip(shadow)
 
         # Blur the shadow
         if shadow_blur > 0:
             shadow = shadow.filter(ImageFilter.GaussianBlur(shadow_blur))
 
-        # Calculate shadow offset
+        # Calculate shadow offset (Richtung und Abstand)
         angle_rad = math.radians(shadow_angle)
         offset_x = int(shadow_distance * math.cos(angle_rad))
         offset_y = -int(shadow_distance * math.sin(angle_rad))
 
-        # Adjust offset for scaled shadow
-        offset_x -= (shadow.width - image_pil.width) // 2
-        offset_y -= (shadow.height - image_pil.height) // 2
+        # Gesamtoffset: Skalierung + Richtung
+        total_offset_x = offset_x + scale_offset_x
+        total_offset_y = offset_y + scale_offset_y
 
-        # Create a new image for the final composite
-        composite_width = image_pil.width + abs(offset_x)
-        composite_height = image_pil.height + abs(offset_y)
+        # Neue Bildgröße berechnen, damit alles reinpasst
+        min_x = min(0, total_offset_x)
+        min_y = min(0, total_offset_y)
+        max_x = max(image_pil.width, total_offset_x + shadow.width)
+        max_y = max(image_pil.height, total_offset_y + shadow.height)
+        composite_width = max_x - min_x
+        composite_height = max_y - min_y
         composite_image = Image.new("RGBA", (composite_width, composite_height), (0, 0, 0, 0))
 
-        # Paste shadow
-        shadow_x = max(0, offset_x)
-        shadow_y = max(0, offset_y)
+        # Schatten einfügen
+        shadow_x = total_offset_x - min_x
+        shadow_y = total_offset_y - min_y
         composite_image.paste(shadow, (shadow_x, shadow_y), shadow)
 
-        # Paste original image on top
-        image_x = max(0, -offset_x)
-        image_y = max(0, -offset_y)
+        # Originalbild einfügen
+        image_x = -min_x
+        image_y = -min_y
         composite_image.paste(image_pil, (image_x, image_y), image_pil)
 
         # Convert the composite image back to a tensor
