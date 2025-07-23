@@ -10,9 +10,9 @@ class DropShadow:
             "required": {
                 "image": ("IMAGE",),
                 "shadow_angle": ("INT", {
-                    "default": 135,
+                    "default": 6,
                     "min": 0,
-                    "max": 360,
+                    "max": 12,
                     "step": 1,
                     "display": "slider"
                 }),
@@ -79,7 +79,7 @@ class DropShadow:
 
         # --- Kante des Objekts in Schattenrichtung finden ---
         # Schattenrichtung = Lichtwinkel + 180°
-        shadow_dir = (shadow_angle + 180) % 360
+        shadow_dir = (shadow_angle + 6) % 12
         angle_rad = math.radians(shadow_dir)
         dx = math.cos(angle_rad)
         dy = -math.sin(angle_rad)
