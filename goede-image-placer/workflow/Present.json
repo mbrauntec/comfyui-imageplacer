@@ -1,0 +1,602 @@
+{
+  "id": "8993517e-0ffb-4a26-a393-c24173149ded",
+  "revision": 0,
+  "last_node_id": 24,
+  "last_link_id": 35,
+  "nodes": [
+    {
+      "id": 7,
+      "type": "ImageComposite",
+      "pos": [
+        -1217.19384765625,
+        614.5014038085938
+      ],
+      "size": [
+        270,
+        78
+      ],
+      "flags": {
+        "collapsed": true,
+        "pinned": true
+      },
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "background_image",
+          "type": "IMAGE",
+          "link": 4
+        },
+        {
+          "name": "subject_image",
+          "type": "IMAGE",
+          "link": 30
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            6
+          ]
+        },
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            28
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ImageComposite"
+      },
+      "widgets_values": [
+        50
+      ]
+    },
+    {
+      "id": 16,
+      "type": "LoadLBMModel",
+      "pos": [
+        -974.2442626953125,
+        617.0792236328125
+      ],
+      "size": [
+        270,
+        106
+      ],
+      "flags": {
+        "collapsed": false,
+        "pinned": true
+      },
+      "order": 0,
+      "mode": 4,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "model",
+          "type": "LBM_MODEL",
+          "links": [
+            18
+          ]
+        }
+      ],
+      "properties": {
+        "aux_id": "ratatule2/ComfyUI-LBMWrapper",
+        "ver": "7a9ee7ada242bdc81c7247996422c60ece8126f9",
+        "Node name for S&R": "LoadLBMModel"
+      },
+      "widgets_values": [
+        "LBM\\LBM_relighting.safetensors",
+        "bf16",
+        "main_device"
+      ]
+    },
+    {
+      "id": 17,
+      "type": "LBMSampler",
+      "pos": [
+        -645.0732421875,
+        639.4443969726562
+      ],
+      "size": [
+        270,
+        78
+      ],
+      "flags": {
+        "collapsed": false,
+        "pinned": true
+      },
+      "order": 9,
+      "mode": 4,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "LBM_MODEL",
+          "link": 18
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 28
+        }
+      ],
+      "outputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "links": [
+            21
+          ]
+        }
+      ],
+      "properties": {
+        "aux_id": "ratatule2/ComfyUI-LBMWrapper",
+        "ver": "7a9ee7ada242bdc81c7247996422c60ece8126f9",
+        "Node name for S&R": "LBMSampler"
+      },
+      "widgets_values": [
+        10
+      ]
+    },
+    {
+      "id": 18,
+      "type": "PreviewImage",
+      "pos": [
+        -986.7172241210938,
+        777.4373168945312
+      ],
+      "size": [
+        621.1367797851562,
+        826.5918579101562
+      ],
+      "flags": {
+        "pinned": true
+      },
+      "order": 10,
+      "mode": 4,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 21
+        }
+      ],
+      "outputs": [],
+      "title": "Angepasste LIchtstimmung",
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.40",
+        "Node name for S&R": "PreviewImage"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 4,
+      "type": "LoadImage",
+      "pos": [
+        -2267.865234375,
+        667.486572265625
+      ],
+      "size": [
+        378.9244689941406,
+        453.5595703125
+      ],
+      "flags": {
+        "pinned": true
+      },
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            33
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "title": "Artikelbild",
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.40",
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "5810006_01.png",
+        "image"
+      ]
+    },
+    {
+      "id": 23,
+      "type": "AddPadding",
+      "pos": [
+        -1848.1055908203125,
+        718.6134033203125
+      ],
+      "size": [
+        262.0392150878906,
+        150
+      ],
+      "flags": {
+        "collapsed": false,
+        "pinned": true
+      },
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 33
+        }
+      ],
+      "outputs": [
+        {
+          "name": "image_4_channel",
+          "type": "IMAGE",
+          "links": []
+        },
+        {
+          "name": "image_3_channel",
+          "type": "IMAGE",
+          "links": [
+            34
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "AddPadding"
+      },
+      "widgets_values": [
+        196,
+        217,
+        186,
+        146
+      ]
+    },
+    {
+      "id": 21,
+      "type": "DropShadow",
+      "pos": [
+        -1848.1055908203125,
+        963.9947509765625
+      ],
+      "size": [
+        270,
+        154
+      ],
+      "flags": {
+        "pinned": true
+      },
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 35
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            30
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "DropShadow"
+      },
+      "widgets_values": [
+        87,
+        0,
+        22,
+        1,
+        "#000000"
+      ]
+    },
+    {
+      "id": 5,
+      "type": "RMBG",
+      "pos": [
+        -1848.1055908203125,
+        913.6129150390625
+      ],
+      "size": [
+        286.8999938964844,
+        270
+      ],
+      "flags": {
+        "collapsed": true,
+        "pinned": true
+      },
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 34
+        }
+      ],
+      "outputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "links": [
+            35
+          ]
+        },
+        {
+          "name": "mask",
+          "type": "MASK",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-rmbg",
+        "ver": "1.9.3",
+        "Node name for S&R": "RMBG"
+      },
+      "widgets_values": [
+        "INSPYRENET",
+        1,
+        1024,
+        0,
+        0,
+        "Alpha",
+        false,
+        "default",
+        false
+      ]
+    },
+    {
+      "id": 2,
+      "type": "ImageSelector",
+      "pos": [
+        -1848.1055908203125,
+        613.1532592773438
+      ],
+      "size": [
+        270,
+        58
+      ],
+      "flags": {
+        "pinned": true
+      },
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            4
+          ]
+        }
+      ],
+      "title": "Hintergrundwähler",
+      "properties": {
+        "Node name for S&R": "ImageSelector"
+      },
+      "widgets_values": [
+        "stoff01.jpg"
+      ]
+    },
+    {
+      "id": 8,
+      "type": "PreviewImage",
+      "pos": [
+        -1512.4334716796875,
+        654.052001953125
+      ],
+      "size": [
+        458.6466979980469,
+        672.9603881835938
+      ],
+      "flags": {
+        "pinned": true
+      },
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 6
+        }
+      ],
+      "outputs": [],
+      "title": "Bildausgabe",
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.40",
+        "Node name for S&R": "PreviewImage"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 24,
+      "type": "Fast Groups Bypasser (rgthree)",
+      "pos": [
+        -1814.911376953125,
+        1193.1680908203125
+      ],
+      "size": [
+        246.20046997070312,
+        58
+      ],
+      "flags": {
+        "pinned": true
+      },
+      "order": 3,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "OPT_CONNECTION",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "matchColors": "",
+        "matchTitle": "Lichtstimmung",
+        "showNav": false,
+        "sort": "position",
+        "customSortAlphabet": "",
+        "toggleRestriction": "default"
+      }
+    }
+  ],
+  "links": [
+    [
+      4,
+      2,
+      0,
+      7,
+      0,
+      "IMAGE"
+    ],
+    [
+      6,
+      7,
+      0,
+      8,
+      0,
+      "IMAGE"
+    ],
+    [
+      18,
+      16,
+      0,
+      17,
+      0,
+      "LBM_MODEL"
+    ],
+    [
+      21,
+      17,
+      0,
+      18,
+      0,
+      "IMAGE"
+    ],
+    [
+      28,
+      7,
+      1,
+      17,
+      1,
+      "IMAGE"
+    ],
+    [
+      30,
+      21,
+      0,
+      7,
+      1,
+      "IMAGE"
+    ],
+    [
+      33,
+      4,
+      0,
+      23,
+      0,
+      "IMAGE"
+    ],
+    [
+      34,
+      23,
+      1,
+      5,
+      0,
+      "IMAGE"
+    ],
+    [
+      35,
+      5,
+      0,
+      21,
+      0,
+      "IMAGE"
+    ]
+  ],
+  "groups": [
+    {
+      "id": 1,
+      "title": "Lichtstimmung",
+      "bounding": [
+        -996.7172241210938,
+        543.479248046875,
+        641.1367797851562,
+        1070.550048828125
+      ],
+      "color": "#3f789e",
+      "font_size": 24,
+      "flags": {
+        "pinned": true
+      }
+    },
+    {
+      "id": 2,
+      "title": "Bildausgabe",
+      "bounding": [
+        -1522.4334716796875,
+        540.9014282226562,
+        478.646728515625,
+        796.1110229492188
+      ],
+      "color": "#dcd0d0",
+      "font_size": 24,
+      "flags": {
+        "pinned": true
+      }
+    },
+    {
+      "id": 3,
+      "title": "EIngabe",
+      "bounding": [
+        -2277.865234375,
+        539.5532836914062,
+        709.758544921875,
+        591.4928588867188
+      ],
+      "color": "#b58b2a",
+      "font_size": 24,
+      "flags": {
+        "pinned": true
+      }
+    }
+  ],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.7972024500000005,
+      "offset": [
+        3108.2250376821175,
+        -658.3554837518245
+      ]
+    },
+    "ue_links": [],
+    "frontendVersion": "1.21.7",
+    "VHS_latentpreview": false,
+    "VHS_latentpreviewrate": 0,
+    "VHS_MetadataImage": true,
+    "VHS_KeepIntermediate": true
+  },
+  "version": 0.4
+}
