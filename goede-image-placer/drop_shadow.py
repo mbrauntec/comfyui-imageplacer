@@ -84,7 +84,7 @@ class DropShadow:
         shadow_dir = (light_angle + 180) % 360
         angle_rad = math.radians(shadow_dir)
         dx = math.cos(angle_rad)
-        dy = -math.sin(angle_rad)
+        dy = math.sin(angle_rad)  # Korrektur: kein Minus, damit y+ nach unten zeigt
         # Alpha-Kanal als numpy-Array
         alpha_np = np.array(alpha)
         ys, xs = np.nonzero(alpha_np > 0)
