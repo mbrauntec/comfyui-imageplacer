@@ -31,7 +31,8 @@ class ImageComposite:
 
         # Calculate the new size of the subject
         new_width = background_pil.width - 2 * spacing
-        new_height = background_pil.height - 2 * spacing
+        aspect_ratio = subject_pil.height / subject_pil.width
+        new_height = int(new_width * aspect_ratio)
 
         # Resize the subject
         resized_subject = subject_pil.resize((new_width, new_height))
@@ -42,7 +43,7 @@ class ImageComposite:
 
         # Calculate the position to paste the subject
         paste_x = spacing
-        paste_y = spacing
+        paste_y = (background_pil.height - new_height) // 2
 
         # Ensure subject is RGBA
         resized_subject = resized_subject.convert("RGBA")

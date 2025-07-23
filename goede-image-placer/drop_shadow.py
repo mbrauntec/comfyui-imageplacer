@@ -70,22 +70,28 @@ class DropShadow:
             shadow = shadow.filter(ImageFilter.GaussianBlur(shadow_blur))
 
         # Calculate shadow offset
-        angle_rad = math.radians(360 - shadow_angle)
+        angle_rad = math.radians(shadow_angle)
         offset_x = int(shadow_distance * math.cos(angle_rad))
-        offset_y = int(shadow_distance * math.sin(angle_rad))
+        offset_y = -int(shadow_distance * math.sin(angle_rad))
 
         # Adjust offset for scaled shadow
         offset_x -= (shadow.width - image_pil.width) // 2
         offset_y -= (shadow.height - image_pil.height) // 2
 
         # Create a new image for the final composite
-        composite_image = Image.new("RGBA", image_pil.size)
+        composite_width = image_pil.width + abs(offset_x)
+        composite_height = image_pil.height + abs(offset_y)
+        composite_image = Image.new("RGBA", (composite_width, composite_height), (0, 0, 0, 0))
 
         # Paste shadow
-        composite_image.paste(shadow, (offset_x, offset_y), shadow)
+        shadow_x = max(0, offset_x)
+        shadow_y = max(0, offset_y)
+        composite_image.paste(shadow, (shadow_x, shadow_y), shadow)
 
         # Paste original image on top
-        composite_image.paste(image_pil, (0, 0), image_pil)
+        image_x = max(0, -offset_x)
+        image_y = max(0, -offset_y)
+        composite_image.paste(image_pil, (image_x, image_y), image_pil)
 
         # Convert the composite image back to a tensor
         composite_tensor = torch.from_numpy(np.array(composite_image).astype(np.float32) / 255.0).unsqueeze(0)

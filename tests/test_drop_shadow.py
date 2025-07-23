@@ -26,7 +26,14 @@ def test_drop_shadow():
 
     # Assertions
     assert shadow_image.width == 200
-    assert shadow_image.height == 200
+    assert shadow_image.height == 250
+
+    # Check that the shadow is cast to the left
+    # The image is red, the shadow is black.
+    # The original image is at (0,50)
+    # The shadow is at (0,0)
+    assert shadow_image.getpixel((10, 10))[0] < 50 # shadow
+    assert shadow_image.getpixel((10, 60))[0] == 255 # image
 
     print("Test passed!")
 
