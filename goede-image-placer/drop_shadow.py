@@ -78,8 +78,10 @@ class DropShadow:
             shadow = shadow.filter(ImageFilter.GaussianBlur(shadow_blur))
 
         # --- Kante des Objekts in Schattenrichtung finden ---
-        # Schattenrichtung = Lichtwinkel + 180°
-        shadow_dir = (shadow_angle + 6) % 12
+        # shadow_angle als Uhrzeit (1–12), 12 Uhr = unten, 3 Uhr = links, 6 Uhr = oben, 9 Uhr = rechts
+        # Lichtwinkel berechnen:
+        light_angle = (shadow_angle - 3) * 30  # 3 Uhr = 0°, 12 Uhr = 270°
+        shadow_dir = (light_angle + 180) % 360
         angle_rad = math.radians(shadow_dir)
         dx = math.cos(angle_rad)
         dy = -math.sin(angle_rad)
