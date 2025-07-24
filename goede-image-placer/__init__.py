@@ -3,9 +3,10 @@ from .drop_shadow import NODE_CLASS_MAPPINGS as drop_shadow_mappings, NODE_DISPL
 from .add_padding import NODE_CLASS_MAPPINGS as add_padding_mappings, NODE_DISPLAY_NAME_MAPPINGS as add_padding_display_name_mappings
 from .image_selector import NODE_CLASS_MAPPINGS as image_selector_mappings, NODE_DISPLAY_NAME_MAPPINGS as image_selector_display_name_mappings
 from .spotlight import NODE_CLASS_MAPPINGS as spotlight_mappings, NODE_DISPLAY_NAME_MAPPINGS as spotlight_display_name_mappings
+from .perfect_shadow import NODE_CLASS_MAPPINGS as perfect_shadow_mappings, NODE_DISPLAY_NAME_MAPPINGS as perfect_shadow_display_name_mappings
 
 
-NODE_CLASS_MAPPINGS = {**image_composite_mappings, **drop_shadow_mappings, **add_padding_mappings, **image_selector_mappings, **spotlight_mappings}
-NODE_DISPLAY_NAME_MAPPINGS = {**image_composite_display_name_mappings, **drop_shadow_display_name_mappings, **add_padding_display_name_mappings, **image_selector_display_name_mappings, **spotlight_display_name_mappings}
+NODE_CLASS_MAPPINGS = {**image_composite_mappings, **drop_shadow_mappings, **add_padding_mappings, **image_selector_mappings, **spotlight_mappings, **perfect_shadow_mappings}
+NODE_DISPLAY_NAME_MAPPINGS = {**image_composite_display_name_mappings, **drop_shadow_display_name_mappings, **add_padding_display_name_mappings, **image_selector_display_name_mappings, **spotlight_display_name_mappings, **perfect_shadow_display_name_mappings}
 
 __all__ = ['NODE_CLASS_MAPPINGS', 'NODE_DISPLAY_NAME_MAPPINGS']
