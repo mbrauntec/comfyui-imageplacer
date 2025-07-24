@@ -72,11 +72,14 @@ class Spotlight:
         if shadow_blur > 0:
             shadow = shadow.filter(ImageFilter.GaussianBlur(shadow_blur))
 
-        # --- Konturpunkt an der gewünschten Uhrzeit-Position finden ---
-        # shadow_angle als Uhrzeit (1–12), 12 Uhr = oben, 3 Uhr = rechts, 6 Uhr = unten, 9 Uhr = links
-        # Umrechnung: 12 Uhr = 270°, 3 Uhr = 0°, 6 Uhr = 90°, 9 Uhr = 180°
-        light_angle = (light_from - 3) * 30
-        # Schattenrichtung = Lichtquelle + 180°
+        # Convert light_from (1-12) to an angle in degrees
+        light_angle_map = {
+            1: 30, 2: 60, 3: 90, 4: 120, 5: 150, 6: 180,
+            7: 210, 8: 240, 9: 270, 10: 300, 11: 330, 12: 360
+        }
+        light_angle = light_angle_map[light_from]
+
+        # The shadow is cast in the opposite direction of the light
         shadow_dir = (light_angle + 180) % 360
 
         # Offset in Schattenrichtung berechnen
