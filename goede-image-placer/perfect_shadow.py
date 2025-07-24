@@ -26,7 +26,10 @@ class PerfectShadow:
     def apply_shadow(self, image, light_from):
         # The input is a tensor, but we will treat it as a numpy array
         # and convert it to a PIL image.
-        image_pil = Image.fromarray(np.clip(255. * image.squeeze(), 0, 255).astype(np.uint8))
+        if hasattr(image, 'cpu'):
+            image = image.cpu().numpy()
+        image_np = np.clip(255. * image.squeeze(), 0, 255).astype(np.uint8)
+        image_pil = Image.fromarray(image_np)
 
         # Ensure image is RGBA
         if image_pil.mode != 'RGBA':
