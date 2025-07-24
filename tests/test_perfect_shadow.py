@@ -25,7 +25,8 @@ def test_perfect_shadow():
         shadow_array, = perfect_shadow_node.apply_shadow(image_array, i)
 
         # Convert back to PIL image
-        shadow_image = Image.fromarray(np.clip(255. * shadow_array.squeeze(), 0, 255).astype(np.uint8))
+        shadow_array_np = shadow_array.cpu().numpy()
+        shadow_image = Image.fromarray(np.clip(255. * shadow_array_np.squeeze(), 0, 255).astype(np.uint8))
 
         # Save the image for manual verification
         shadow_image.save(f"test_spotlight_{i}.png")

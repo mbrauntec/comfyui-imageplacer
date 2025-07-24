@@ -1,6 +1,7 @@
 from PIL import Image, ImageFilter
 import numpy as np
 import math
+import torch
 
 class PerfectShadow:
     @classmethod
@@ -90,7 +91,7 @@ class PerfectShadow:
         # Convert back to numpy array, which is what the test expects
         final_array = np.array(final_image).astype(np.float32) / 255.0
         # We need to add the batch dimension back
-        return (final_array[np.newaxis, ...],)
+        return (torch.from_numpy(final_array[np.newaxis, ...]),)
 
 NODE_CLASS_MAPPINGS = {
     "PerfectShadow": PerfectShadow
