@@ -54,15 +54,16 @@ class Spotlight:
         shadow = Image.new('RGBA', image_pil.size, color=shadow_color)
         shadow.putalpha(alpha)
 
-shadow_scale = max(1.0, shadow_length / 5.0)  # Ensure the shadow does not shrink below 1x size
-    # Schatten ggf. skalieren (um Mittelpunkt)
-    if shadow_scale > 1.0:
-c        cx, cy = image_pil.width // 2, image_pil.height // 2
-        new_w = int(shadow.width * shadow_scale)
-        new_h = int(shadow.height * shadow_scale)
-        shadow = shadow.resize((new_w, new_h), Image.LANCZOS)
-        scale_offset_x = cx - new_w // 2
-        scale_offset_y = cy - new_h // 2// 2
+        shadow_scale = shadow_length / 5.0
+
+        # Schatten ggf. skalieren (um Mittelpunkt)
+        if shadow_scale != 1.0:
+            cx, cy = image_pil.width // 2, image_pil.height // 2
+            new_w = int(shadow.width * shadow_scale)
+            new_h = int(shadow.height * shadow_scale)
+            shadow = shadow.resize((new_w, new_h), Image.LANCZOS)
+            scale_offset_x = cx - new_w // 2
+            scale_offset_y = cy - new_h // 2
         else:
             scale_offset_x = 0
             scale_offset_y = 0
@@ -87,10 +88,11 @@ c        cx, cy = image_pil.width // 2, image_pil.height // 2
         dy_shadow = math.sin(angle_rad_shadow)
 
         # The shadow distance is controlled by the shadow_length
-       shadow_distance = max(0.0, (shadow_length - 5) * 20)  # Ensure non-negative distance
+        shadow_distance = (shadow_length - 5) * 20
 
         offset_x = int(round(dx_shadow * shadow_distance))
         offset_y = int(round(dy_shadow * shadow_distance))
+
         # Gesamt-Offset: Skalierung + Richtung
         total_offset_x = scale_offset_x + offset_x
         total_offset_y = scale_offset_y + offset_y
