@@ -46,17 +46,20 @@ class PerfectShadow:
         shadow_length = 2000  # A large value to create a long shadow
         blur_radius = 10
 
-        # Angle mapping
+        # Angle mapping from clock hour to degrees
         angle_map = {
-            1: 210, 2: 240, 3: 270, 4: 300, 5: 330, 6: 0,
-            7: 30, 8: 60, 9: 90, 10: 120, 11: 150, 12: 180
+            1: 150, 2: 120, 3: 90, 4: 60, 5: 30, 6: 0,
+            7: 330, 8: 300, 9: 270, 10: 240, 11: 210, 12: 180
         }
         angle = angle_map[light_from]
         angle_rad = math.radians(angle)
 
+        # The direction of the shadow is opposite to the light source
+        shadow_angle_rad = angle_rad + math.pi
+
         # Create a long shadow by shearing the image
-        x_shear = math.cos(angle_rad)
-        y_shear = math.sin(angle_rad)
+        x_shear = math.cos(shadow_angle_rad)
+        y_shear = math.sin(shadow_angle_rad)
 
         # We create a new image large enough to hold the sheared shadow
         new_width = image_pil.width + abs(int(shadow_length * x_shear))
