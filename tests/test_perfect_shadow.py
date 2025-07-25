@@ -22,7 +22,7 @@ def test_perfect_shadow():
     # Test with different shrink values
     for shrink_value in [-5, 0, 5]:
         # Call the apply_shadow method
-        shadow_array, = perfect_shadow_node.apply_shadow(image_array, 1, 5, shrink_value)
+        shadow_array, = perfect_shadow_node.apply_shadow(image_array, 1, 5, shrink_value, 10, "#000000")
 
         # Convert back to PIL image
         shadow_array_np = shadow_array.cpu().numpy()
