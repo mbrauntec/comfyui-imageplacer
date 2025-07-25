@@ -37,6 +37,13 @@ class PerfectShadow:
                     "step": 1,
                     "display": "slider"
                 }),
+                "opacity": ("INT", {
+                    "default": 10,
+                    "min": 0,
+                    "max": 10,
+                    "step": 1,
+                    "display": "slider"
+                }),
                 "shadow_color": ("STRING", {
                     "default": "#000000",
                     "display": "color"
@@ -49,7 +56,7 @@ class PerfectShadow:
 
     CATEGORY = "Goede"
 
-    def apply_shadow(self, image, light_from, shadow_length, shrink, blur, shadow_color):
+    def apply_shadow(self, image, light_from, shadow_length, shrink, blur, opacity, shadow_color):
         # The input is a tensor, but we will treat it as a numpy array
         # and convert it to a PIL image.
         if hasattr(image, 'cpu'):
@@ -67,7 +74,10 @@ class PerfectShadow:
         # Convert hex color to RGBA
         hex_color = shadow_color.lstrip('#')
         rgb_color = tuple(int(hex_color[i:i+2], 16) for i in (0, 2, 4))
-        rgba_color = rgb_color + (255,)
+
+        # Calculate alpha from opacity
+        alpha_value = int((opacity / 10.0) * 255)
+        rgba_color = rgb_color + (alpha_value,)
 
         shadow = Image.new('RGBA', image_pil.size, rgba_color)
         shadow.putalpha(alpha)
