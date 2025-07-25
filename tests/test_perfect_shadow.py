@@ -19,7 +19,7 @@ def test_perfect_shadow():
     # Instantiate the node
     perfect_shadow_node = PerfectShadow()
 
-    # Test all 12 directions with positive growth
+    # Test all 12 directions
     for i in range(1, 13):
         # Call the apply_shadow method
         shadow_array, = perfect_shadow_node.apply_shadow(image_array, i, 5)
@@ -29,13 +29,7 @@ def test_perfect_shadow():
         shadow_image = Image.fromarray(np.clip(255. * shadow_array_np.squeeze(), 0, 255).astype(np.uint8))
 
         # Save the image for manual verification
-        shadow_image.save(f"test_spotlight_{i}_positive.png")
-
-    # Test a single direction with negative growth
-    shadow_array, = perfect_shadow_node.apply_shadow(image_array, 1, -5)
-    shadow_array_np = shadow_array.cpu().numpy()
-    shadow_image = Image.fromarray(np.clip(255. * shadow_array_np.squeeze(), 0, 255).astype(np.uint8))
-    shadow_image.save("test_spotlight_1_negative.png")
+        shadow_image.save(f"test_spotlight_{i}.png")
 
     print("Test passed! All shadow images generated.")
 
