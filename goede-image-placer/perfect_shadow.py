@@ -16,10 +16,17 @@ class PerfectShadow:
                     "step": 1,
                     "display": "slider"
                 }),
-                "shadow_growth": ("INT", {
-                    "default": 0,
-                    "min": -10,
+                "shadow_length": ("INT", {
+                    "default": 5,
+                    "min": 1,
                     "max": 10,
+                    "step": 1,
+                    "display": "slider"
+                }),
+                "shrink": ("INT", {
+                    "default": 0,
+                    "min": -5,
+                    "max": 5,
                     "step": 1,
                     "display": "slider"
                 }),
@@ -31,7 +38,7 @@ class PerfectShadow:
 
     CATEGORY = "Goede"
 
-    def apply_shadow(self, image, light_from, shadow_growth):
+    def apply_shadow(self, image, light_from, shadow_length, shrink):
         # The input is a tensor, but we will treat it as a numpy array
         # and convert it to a PIL image.
         if hasattr(image, 'cpu'):
@@ -49,8 +56,18 @@ class PerfectShadow:
         shadow = Image.new('RGBA', image_pil.size, shadow_color)
         shadow.putalpha(alpha)
 
+        # Shrink the shadow mask
+        if shrink != 0:
+            width, height = shadow.size
+            if shrink < 0:
+                new_width = int(width * (1 + shrink / 10.0))
+                shadow = shadow.resize((new_width, height), Image.LANCZOS)
+            else:
+                new_height = int(height * (1 - shrink / 10.0))
+                shadow = shadow.resize((width, new_height), Image.LANCZOS)
+
         # Shadow parameters
-        shadow_length = 500 + shadow_growth * 50
+        shadow_length = shadow_length * 100  # A large value to create a long shadow
         blur_radius = 10
 
         # Angle mapping from clock hour to degrees
@@ -67,12 +84,6 @@ class PerfectShadow:
         # Create a long shadow by shearing the image
         x_shear = math.cos(shadow_angle_rad)
         y_shear = math.sin(shadow_angle_rad)
-
-        # Adjust the shearing direction for negative growth
-        if shadow_growth < 0:
-            x_shear = -x_shear
-            y_shear = -y_shear
-            shadow_length = abs(shadow_growth * 50)
 
         # We create a new image large enough to hold the sheared shadow
         new_width = image_pil.width + abs(int(shadow_length * x_shear))
