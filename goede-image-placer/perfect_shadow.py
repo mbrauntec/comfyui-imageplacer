@@ -30,6 +30,17 @@ class PerfectShadow:
                     "step": 1,
                     "display": "slider"
                 }),
+                "blur": ("INT", {
+                    "default": 10,
+                    "min": 0,
+                    "max": 10,
+                    "step": 1,
+                    "display": "slider"
+                }),
+                "shadow_color": ("STRING", {
+                    "default": "#000000",
+                    "display": "color"
+                }),
             },
         }
 
@@ -38,7 +49,7 @@ class PerfectShadow:
 
     CATEGORY = "Goede"
 
-    def apply_shadow(self, image, light_from, shadow_length, shrink):
+    def apply_shadow(self, image, light_from, shadow_length, shrink, blur, shadow_color):
         # The input is a tensor, but we will treat it as a numpy array
         # and convert it to a PIL image.
         if hasattr(image, 'cpu'):
@@ -52,8 +63,13 @@ class PerfectShadow:
 
         # Create a silhouette
         alpha = image_pil.getchannel('A')
-        shadow_color = (0, 0, 0, 255)
-        shadow = Image.new('RGBA', image_pil.size, shadow_color)
+
+        # Convert hex color to RGBA
+        hex_color = shadow_color.lstrip('#')
+        rgb_color = tuple(int(hex_color[i:i+2], 16) for i in (0, 2, 4))
+        rgba_color = rgb_color + (255,)
+
+        shadow = Image.new('RGBA', image_pil.size, rgba_color)
         shadow.putalpha(alpha)
 
         # Shrink the shadow mask
@@ -68,7 +84,6 @@ class PerfectShadow:
 
         # Shadow parameters
         shadow_length = shadow_length * 100  # A large value to create a long shadow
-        blur_radius = 10
 
         # Angle mapping from clock hour to degrees
         angle_map = {
@@ -103,8 +118,8 @@ class PerfectShadow:
             long_shadow.paste(shadow, (paste_x, paste_y), shadow)
 
         # Blur the shadow
-        if blur_radius > 0:
-            long_shadow = long_shadow.filter(ImageFilter.GaussianBlur(blur_radius))
+        if blur > 0:
+            long_shadow = long_shadow.filter(ImageFilter.GaussianBlur(blur))
 
         # Composite the original image over the shadow
         # The original image should be centered in the new canvas
