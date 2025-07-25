@@ -16,9 +16,9 @@ class PerfectShadow:
                     "step": 1,
                     "display": "slider"
                 }),
-                "shadow_length": ("INT", {
-                    "default": 5,
-                    "min": 1,
+                "shadow_growth": ("INT", {
+                    "default": 0,
+                    "min": -10,
                     "max": 10,
                     "step": 1,
                     "display": "slider"
@@ -31,7 +31,7 @@ class PerfectShadow:
 
     CATEGORY = "Goede"
 
-    def apply_shadow(self, image, light_from, shadow_length):
+    def apply_shadow(self, image, light_from, shadow_growth):
         # The input is a tensor, but we will treat it as a numpy array
         # and convert it to a PIL image.
         if hasattr(image, 'cpu'):
@@ -50,7 +50,7 @@ class PerfectShadow:
         shadow.putalpha(alpha)
 
         # Shadow parameters
-        shadow_length = shadow_length * 100  # A large value to create a long shadow
+        shadow_length = 500 + shadow_growth * 50
         blur_radius = 10
 
         # Angle mapping from clock hour to degrees
@@ -67,6 +67,12 @@ class PerfectShadow:
         # Create a long shadow by shearing the image
         x_shear = math.cos(shadow_angle_rad)
         y_shear = math.sin(shadow_angle_rad)
+
+        # Adjust the shearing direction for negative growth
+        if shadow_growth < 0:
+            x_shear = -x_shear
+            y_shear = -y_shear
+            shadow_length = abs(shadow_growth * 50)
 
         # We create a new image large enough to hold the sheared shadow
         new_width = image_pil.width + abs(int(shadow_length * x_shear))
