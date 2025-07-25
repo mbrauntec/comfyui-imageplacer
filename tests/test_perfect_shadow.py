@@ -22,7 +22,7 @@ def test_perfect_shadow():
     # Test all 12 directions
     for i in range(1, 13):
         # Call the apply_shadow method
-        shadow_array, = perfect_shadow_node.apply_shadow(image_array, i)
+        shadow_array, = perfect_shadow_node.apply_shadow(image_array, i, 5)
 
         # Convert back to PIL image
         shadow_array_np = shadow_array.cpu().numpy()
