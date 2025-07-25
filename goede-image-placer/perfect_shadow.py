@@ -23,6 +23,13 @@ class PerfectShadow:
                     "step": 1,
                     "display": "slider"
                 }),
+                "opacity": ("FLOAT", {
+                    "default": 1.0,
+                    "min": 0.0,
+                    "max": 1.0,
+                    "step": 0.1,
+                    "display": "slider"
+                }),
             },
         }
 
@@ -31,7 +38,7 @@ class PerfectShadow:
 
     CATEGORY = "Goede"
 
-    def apply_shadow(self, image, light_from, shadow_length):
+    def apply_shadow(self, image, light_from, shadow_length, opacity):
         # The input is a tensor, but we will treat it as a numpy array
         # and convert it to a PIL image.
         if hasattr(image, 'cpu'):
@@ -45,7 +52,7 @@ class PerfectShadow:
 
         # Create a silhouette
         alpha = image_pil.getchannel('A')
-        shadow_color = (0, 0, 0, 255)
+        shadow_color = (0, 0, 0, int(opacity * 255))
         shadow = Image.new('RGBA', image_pil.size, shadow_color)
         shadow.putalpha(alpha)
 
