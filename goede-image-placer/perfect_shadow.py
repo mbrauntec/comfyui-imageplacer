@@ -16,6 +16,13 @@ class PerfectShadow:
                     "step": 1,
                     "display": "slider"
                 }),
+                "shadow_length": ("INT", {
+                    "default": 5,
+                    "min": 1,
+                    "max": 10,
+                    "step": 1,
+                    "display": "slider"
+                }),
             },
         }
 
@@ -24,7 +31,7 @@ class PerfectShadow:
 
     CATEGORY = "Goede"
 
-    def apply_shadow(self, image, light_from):
+    def apply_shadow(self, image, light_from, shadow_length):
         # The input is a tensor, but we will treat it as a numpy array
         # and convert it to a PIL image.
         if hasattr(image, 'cpu'):
@@ -43,7 +50,7 @@ class PerfectShadow:
         shadow.putalpha(alpha)
 
         # Shadow parameters
-        shadow_length = 2000  # A large value to create a long shadow
+        shadow_length = shadow_length * 100  # A large value to create a long shadow
         blur_radius = 10
 
         # Angle mapping from clock hour to degrees
